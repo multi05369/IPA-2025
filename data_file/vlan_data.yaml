@@ -1,0 +1,23 @@
+---
+hostname: S1
+vlans:
+  - name: management
+    id: 99
+  - name: control-data
+    id: 101
+interfaces:
+  - name: g0/1
+    mode: access
+    vlan: 101
+  - name: g1/1
+    mode: access
+    vlan: 101
+  - name: g0/0
+    mode: access
+    vlan: 99
+  - name: 99
+    type: svi
+    address: 172.31.18.3
+    subnet: 255.255.255.240
+    no_shutdown: true
+default: 172.31.18.1
