@@ -13,9 +13,9 @@ def makeCommand(tFile=None, vFile=None):
     if vFile is None:
         vFile = input("Input Your data file (that in data_file folder): ")
 
-    template_dir = "../templates"
+    template_dir = "./templates"
     template_file = str(tFile)
-    vars_file = "../data_file/" + str(vFile)
+    vars_file = "./data_file/" + str(vFile)
 
     env = Environment(
         loader=FileSystemLoader(template_dir),
@@ -28,7 +28,7 @@ def makeCommand(tFile=None, vFile=None):
         vars_dict = yaml.safe_load(f)
     return template.render(vars_dict)
 
-def connectDevice(ip : str, username="WINDOWS", password="cisco"):
+def connectDevice(ip : str, username="WINDOWS", password="cisco", tFile=None, vFile=None):
     '''Connect to Cisco device with IP, username and password (you can choose your username and password)'''
     BASE_DEVICE_PARAMS = {
         "device_type": "cisco_ios",
@@ -65,7 +65,7 @@ def connectDevice(ip : str, username="WINDOWS", password="cisco"):
     device_params = BASE_DEVICE_PARAMS.copy()
     device_params["ip"] = ip
 
-    rendered_config = makeCommand()
+    rendered_config = makeCommand(tFile, vFile)
     command_set = [line.strip() for line in rendered_config.strip().split('\n') if line.strip()]
 
     with ConnectHandler(**device_params) as ssh:
@@ -76,5 +76,7 @@ def connectDevice(ip : str, username="WINDOWS", password="cisco"):
         time.sleep(2)
         print(f"Finished configuration for {ip}")
 
-# connectDevice("172.31.18.3")
-print(makeCommand())
+# Example Use
+#connectDevice("172.31.18.5", tFile="ospf_r2.txt", vFile="ospf_r2.yaml")
+#time.sleep(3) If want delay
+#connectDevice("172.31.18.5", tFile="pat_r2.txt", vFile="pat_r2.yaml")

@@ -1,0 +1,21 @@
+hostname {{ hostname }}
+
+{% for itef in interfaces %}
+    {% if itef.name == "g0/2" %}
+int {{ itef.name }}
+    ip add {{ itef.address }} {{ itef.subnet }}
+    {% if itef.no_shutdown %}no shut{% endif %}
+
+    {% elif itef.name == "lo0" %}
+int {{ itef.name }}
+    ip add {{ itef.address }} {{ itef.subnet }}
+    {% if itef.no_shutdown %}no shut{% endif %}
+    {% endif %}
+{% endfor %}
+
+exit
+
+router ospf {{ ospf.id }} vrf {{ ospf.vrf }}
+{% for net in ospf.networks %}
+network {{ net.address }} {{ net.wildcard }} area {{ net.area }}
+{% endfor %}

@@ -1,0 +1,32 @@
+hostname: R2
+interfaces:
+  - name: g0/3
+    vrf: control-data
+    address: dhcp
+    no_shutdown: true
+  - name: g0/1
+    address: 172.31.18.18
+    subnet: 255.255.255.252
+    no_shutdown: true
+  - name: lo0
+    address: 2.2.2.2
+    subnet: 255.255.255.255
+route:
+  address: 0.0.0.0
+  subnet: 0.0.0.0
+  vrf: control-data
+  dest: 192.168.122.1
+ospf:
+  id: 10
+  vrf: control-data
+  default_information: true
+  networks:
+    - address: 192.168.18.128
+      wildcard: 0.0.0.127
+      area: 0
+    - address: 172.31.18.16
+      wildcard: 0.0.0.3
+      area: 0
+    - address: 2.2.2.2
+      wildcard: 0.0.0.0
+      area: 0

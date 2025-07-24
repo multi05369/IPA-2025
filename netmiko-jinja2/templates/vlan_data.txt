@@ -1,0 +1,27 @@
+hostname {{ hostname }}
+
+{% for vlan in vlans %}
+vlan {{ vlan.id }}
+  name {{ vlan.name }}
+{% endfor %}
+
+{% for itef in interfaces %}
+  {% if itef.name == "g0/1" or itef.name == "g1/1" %}
+int {{ itef.name }}
+  switchport mode {{ itef.mode }}
+  switchport access vlan {{ itef.vlan }}
+  {% elif itef.type == "svi" %}
+int vlan {{ itef.name }}
+  ip add {{ itef.address }} {{ itef.subnet }}
+      {% if itef.no_shutdown %}no shutdown{% endif %}
+
+  exit
+  {% else %}
+int {{ itef.name }}
+  switchport mode {{ itef.mode }}
+  switchport access vlan {{ itef.vlan }}
+
+  {% endif %}
+{% endfor %}
+
+ip default-gateway {{ default }}

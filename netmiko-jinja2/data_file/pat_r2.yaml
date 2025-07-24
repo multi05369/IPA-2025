@@ -1,0 +1,14 @@
+nat_interface: g0/3
+inside_interfaces:
+  - name: g0/1
+  - name: g0/2
+acl_list:
+  id: 1
+  act: permit
+  networks:
+    - address: 192.168.18.0
+      wildcard: 0.0.0.255
+    - address: 172.31.18.16
+      wildcard: 0.0.0.3
+vrf: control-data
+overload: true

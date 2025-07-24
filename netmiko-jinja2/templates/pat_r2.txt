@@ -1,0 +1,16 @@
+{% for itef in inside_interfaces %}
+int {{ itef.name }}
+ip nat inside
+{% endfor %}
+
+exit
+
+int {{ nat_interface }}
+ ip nat outside
+exit
+
+{% for rule in acl_list.networks %}
+access-list {{ acl_list.id }} {{ acl_list.act }} {{ rule.address }} {{ rule.wildcard }}
+{% endfor %}
+
+ip nat inside source list {{ acl_list.id }} interface {{ nat_interface }} vrf {{ vrf }} {% if overload %}overload{% endif %}

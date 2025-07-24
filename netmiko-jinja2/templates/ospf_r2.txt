@@ -1,0 +1,25 @@
+hostname {{ hostname }}
+
+{% for itef in interfaces -%}
+int {{ itef.name }}
+{% if itef.vrf is defined %}
+ vrf forwarding {{ itef.vrf }}
+{% endif %}
+ ip add {{ itef.address }}{% if itef.subnet is defined %} {{ itef.subnet }} {% endif %}
+
+{% if itef.no_shutdown %}
+ no shut
+{% endif %}
+{% endfor %}
+exit
+
+ip route vrf {{ route.vrf }} {{ route.address }} {{ route.subnet }} {{ route.dest }}
+
+router ospf {{ ospf.id }} vrf {{ ospf.vrf }}
+{% for net in ospf.networks -%}
+ network {{ net.address }} {{ net.wildcard }} area {{ net.area }}
+{% endfor %}
+{% if ospf.default_information %}
+default-information originate always
+{% endif %}
+exit
