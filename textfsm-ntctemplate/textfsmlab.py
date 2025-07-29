@@ -46,8 +46,11 @@ def connectDevice(ip: str, username="WINDOWS", password="cisco", command=None):
         result = ssh.send_command(command, use_textfsm=True)
         print(f"\nParsed Output for '{command}' on {ip}:")
         pprint(result)
+        for neighbor in result:
+            print(f"Neighbor: {neighbor['neighbor_name']}, Local Int: {neighbor['local_interface']}")
+
 
         print(f"\nFinished configuration for {ip}")
 
 # Example call
-connectDevice("172.31.18.4")
+connectDevice("172.31.18.5", command="show cdp neighbors")
