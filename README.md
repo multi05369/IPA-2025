@@ -17,6 +17,9 @@ Use [re](netmiko-re/) to try netmiko with regex
 ## Section 5: Netmiko with textfsm
 Use [textfsm](textfsm-ntctemplate/) to try netmiko with textfsm
 
+## Section 6: Network Discovery with Netmiko and textfsm (New Features)
+Use [display-connection](network-discovery/) to display all of your devices connection with netmiko and textfsm
+By [Karn S.](https://github.com/kxxnD04)
 
 ### Reference
 
